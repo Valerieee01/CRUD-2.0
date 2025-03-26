@@ -31,6 +31,7 @@ const email = document.querySelector("#correo");
 const tipoDocumento = document.querySelector("#tipo_documento");
 const documento = document.querySelector('#documento');
 const generos = document.querySelector('#generos');
+const tbodyTable = document.querySelector('tbody');
 
 /**
  * ****************************************
@@ -42,7 +43,6 @@ const cargar_pagina = async () => {
   // Cargamos los generos en el select
   const arrayGeneros = await listarGeneros();
   const arrayDocumentos = await listarDocumentos();
-  const arrayUsers = await listarUsuarios();
   
   arrayGeneros.forEach((genero) => {
     const label = document.createElement("label");
@@ -69,7 +69,12 @@ const cargar_pagina = async () => {
     tipoDocumento.append(option);
   });
 
-  const tbodyTable = document.querySelector('tbody');
+ }
+
+ const cargar_tabla = async () => {
+   //cargar lista users
+  const arrayUsers = await listarUsuarios();
+
   const campos = document.createDocumentFragment();
   arrayUsers.forEach(({nombre, apellidos, telefono, correo, documento}) => {
     // apartado nombre
@@ -82,7 +87,7 @@ const cargar_pagina = async () => {
     const tdApellido = document.createElement('td');
     tdApellido.textContent = apellidos;
     trTable.append(tdApellido);
-
+    
     // apartado telefono
     const tdTelefono = document.createElement('td');
     tdTelefono.textContent = telefono;
@@ -97,7 +102,7 @@ const cargar_pagina = async () => {
     const tdDocumento = document.createElement('td');
     tdDocumento.textContent = documento;
     trTable.append(tdDocumento);
-
+    
     const tdBotonera = document.createElement("td");
 
     const divBotonera = document.createElement('div');
@@ -106,23 +111,23 @@ const cargar_pagina = async () => {
     const btnEditar = document.createElement('button');
     btnEditar.textContent = "Editar";
     btnEditar.classList.add("btn", "btn--samall");
-
+    
     
     const btnEliminar = document.createElement('button');
     btnEliminar.textContent = "Eliminar";
     btnEliminar.classList.add("btn", "btn--samall","btn--danger");
-   
+    
     divBotonera.append(btnEditar, btnEliminar);
     tdBotonera.append(divBotonera);
     trTable.append(tdBotonera)
-
+    
     const clone = document.importNode(trTable, true)
     campos.append(clone)
   })
   tbodyTable.append(campos);
-
  }
-
+ 
+ 
 // Función asincrona para poder manipular las peticiones y guardar los datos del formulario
 const guardar = async (e) => {
   // Detenemos el comportamiento por defecto del formulario
@@ -154,6 +159,8 @@ const guardar = async (e) => {
 // Evento que se ejecuta cuando el documento se ha cargado
 document.addEventListener("DOMContentLoaded", () => {
   cargar_pagina();
+  cargar_tabla();
+  
 });
 
 nombre.addEventListener("keydown", son_letras);
