@@ -77,50 +77,46 @@ const cargar_pagina = async () => {
 
   const campos = document.createDocumentFragment();
   arrayUsers.forEach(({nombre, apellidos, telefono, correo, documento}) => {
-    // apartado nombre
+    
+    // creacion de los elementos
     const trTable = document.createElement('tr')
     const tdNombre = document.createElement('td');
-    tdNombre.textContent = nombre;
-    trTable.append(tdNombre);
-
-    // apartado apellidos
     const tdApellido = document.createElement('td');
-    tdApellido.textContent = apellidos;
-    trTable.append(tdApellido);
-    
-    // apartado telefono
     const tdTelefono = document.createElement('td');
-    tdTelefono.textContent = telefono;
-    trTable.append(tdTelefono);
-
-    // apartado correo
     const tdCorreo = document.createElement('td');
-    tdCorreo.textContent = correo;
-    trTable.append(tdCorreo);
-
-    // apartado documento
     const tdDocumento = document.createElement('td');
-    tdDocumento.textContent = documento;
-    trTable.append(tdDocumento);
-    
-    const tdBotonera = document.createElement("td");
-
-    const divBotonera = document.createElement('div');
-    divBotonera.classList.add('botonera');
-    
-    const btnEditar = document.createElement('button');
-    btnEditar.textContent = "Editar";
-    btnEditar.classList.add("btn", "btn--samall");
-    
-    
     const btnEliminar = document.createElement('button');
+
+    //creacios los elementos boton
+    const tdBotonera = document.createElement("td");
+    const divBotonera = document.createElement('div');
+    const btnEditar = document.createElement('button');
+
+    // contenido de los elementos
+    tdNombre.textContent = nombre;
+    tdApellido.textContent = apellidos;
+    tdTelefono.textContent = telefono;
+    tdCorreo.textContent = correo;
+    tdDocumento.textContent = documento;
+
+    // continido elementos tipo boton 
+    btnEditar.textContent = "Editar";
     btnEliminar.textContent = "Eliminar";
+
+
+    // asignacion de estilos 
+    divBotonera.classList.add('botonera');
+    btnEditar.classList.add("btn", "btn--samall");
     btnEliminar.classList.add("btn", "btn--samall","btn--danger");
-    
+
+
+    // agregar elementos
+    trTable.append(tdNombre, tdApellido,tdTelefono, tdCorreo, tdDocumento);
     divBotonera.append(btnEditar, btnEliminar);
     tdBotonera.append(divBotonera);
     trTable.append(tdBotonera)
     
+
     const clone = document.importNode(trTable, true)
     campos.append(clone)
   })

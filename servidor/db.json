@@ -28,7 +28,6 @@
     }
   ],
   "usuarios": [
-    
     {
       "id": "51b0",
       "genero": "1",
@@ -48,6 +47,16 @@
       "correo": "f_afanador@hotmail.com",
       "tipo_documento": "1",
       "documento": "1098621007"
+    },
+    {
+      "id": "bd8b",
+      "genero": "3",
+      "nombre": "Camilo",
+      "apellidos": "Beltran",
+      "telefono": "658951588",
+      "correo": "jumky@gmail.com",
+      "tipo_documento": "1",
+      "documento": "1234567891"
     }
   ]
 }
