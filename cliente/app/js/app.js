@@ -76,27 +76,45 @@ const cargar_pagina = async () => {
     const trTable = document.createElement('tr')
     const tdNombre = document.createElement('td');
     tdNombre.textContent = nombre;
-    tr.append(tdNombre);
+    trTable.append(tdNombre);
 
     // apartado apellidos
     const tdApellido = document.createElement('td');
     tdApellido.textContent = apellidos;
-    tr.append(tdApellido);
+    trTable.append(tdApellido);
 
     // apartado telefono
     const tdTelefono = document.createElement('td');
     tdTelefono.textContent = telefono;
-    tr.append(tdTelefono);
+    trTable.append(tdTelefono);
 
     // apartado correo
     const tdCorreo = document.createElement('td');
     tdCorreo.textContent = correo;
-    tr.append(tdCorreo);
+    trTable.append(tdCorreo);
 
     // apartado documento
     const tdDocumento = document.createElement('td');
     tdDocumento.textContent = documento;
-    tr.append(tdDocumento);
+    trTable.append(tdDocumento);
+
+    const tdBotonera = document.createElement("td");
+
+    const divBotonera = document.createElement('div');
+    divBotonera.classList.add('botonera');
+    
+    const btnEditar = document.createElement('button');
+    btnEditar.textContent = "Editar";
+    btnEditar.classList.add("btn", "btn--samall");
+
+    
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.classList.add("btn", "btn--samall","btn--danger");
+   
+    divBotonera.append(btnEditar, btnEliminar);
+    tdBotonera.append(divBotonera);
+    trTable.append(tdBotonera)
 
     const clone = document.importNode(trTable, true)
     campos.append(clone)
