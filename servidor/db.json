@@ -57,6 +57,46 @@
       "correo": "jumky@gmail.com",
       "tipo_documento": "1",
       "documento": "1234567891"
+    },
+    {
+      "id": "1919",
+      "genero": "1",
+      "nombre": "Ferney",
+      "apellidos": "Afanador Duran",
+      "telefono": "3184435055",
+      "correo": "zharmel.afa@gmail.com",
+      "tipo_documento": "2",
+      "documento": "1095304196"
+    },
+    {
+      "id": "a3ad",
+      "genero": "2",
+      "nombre": "Ferney",
+      "apellidos": "Afanador Duran",
+      "telefono": "3184435055",
+      "correo": "zharmel.afa@gmail.com",
+      "tipo_documento": "1",
+      "documento": "1095315143"
+    },
+    {
+      "id": "1982",
+      "genero": "1",
+      "nombre": "Ferney",
+      "apellidos": "Afanador Duran",
+      "telefono": "3184435055",
+      "correo": "f_afanador@hotmail.com",
+      "tipo_documento": "2",
+      "documento": "1234567891"
+    },
+    {
+      "id": "c59e",
+      "genero": "1",
+      "nombre": "Ferney Afanador Duran",
+      "apellidos": "Perez Montañez",
+      "telefono": "3184435055",
+      "correo": "zharmel.afa@gmail.com",
+      "tipo_documento": "1",
+      "documento": "1095315143"
     }
   ]
 }

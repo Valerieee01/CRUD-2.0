@@ -136,6 +136,8 @@ const guardar = async (e) => {
     const respuesta = await guardar_usuario(data);    
     if (respuesta.status === 201) {
       alert("Usuario guardado correctamente");
+      // refrescar automaticamente
+      cargar_tabla();
       // Limpiamos el formulario
       e.target.reset();
     }else{
@@ -156,7 +158,6 @@ const guardar = async (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   cargar_pagina();
   cargar_tabla();
-  
 });
 
 nombre.addEventListener("keydown", son_letras);
