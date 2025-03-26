@@ -131,7 +131,7 @@ const cargar_pagina = async () => {
 // Función asincrona para poder manipular las peticiones y guardar los datos del formulario
 const guardar = async (e) => {
   // Detenemos el comportamiento por defecto del formulario
-  e.preventDefault();
+  // e.preventDefault();
   // Validamos que el formulario tenga datos
   const data = validar_campos(e.target);
   // Validamos eu el objeto tenga los datos completos y no llegen vacios
