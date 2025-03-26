@@ -7,7 +7,8 @@
 // Importaciones para las ayudas
 import { listarDocumentos } from "../casos_de_uso/documentos/index.js";
 import { listarGeneros } from "../casos_de_uso/generos/index.js";
-import { guardar_usuario } from "../casos_de_uso/usuarios/index.js";
+import { guardar_usuario, listarUsuarios } from "../casos_de_uso/usuarios/index.js";
+
 import {
   tiene_valores,
   validar_campos,
@@ -40,7 +41,8 @@ const cargar_pagina = async () => {
 
   // Cargamos los generos en el select
   const arrayGeneros = await listarGeneros();
-  const arrayDocumentos = await listarDocumentos()
+  const arrayDocumentos = await listarDocumentos();
+  const arrayUsers = await listarUsuarios();
   
   arrayGeneros.forEach((genero) => {
     const label = document.createElement("label");
@@ -67,6 +69,39 @@ const cargar_pagina = async () => {
     tipoDocumento.append(option);
   });
 
+  const tbodyTable = document.querySelector('tbody');
+  const campos = document.createDocumentFragment();
+  arrayUsers.forEach(({nombre, apellidos, telefono, correo, documento}) => {
+    // apartado nombre
+    const trTable = document.createElement('tr')
+    const tdNombre = document.createElement('td');
+    tdNombre.textContent = nombre;
+    tr.append(tdNombre);
+
+    // apartado apellidos
+    const tdApellido = document.createElement('td');
+    tdApellido.textContent = apellidos;
+    tr.append(tdApellido);
+
+    // apartado telefono
+    const tdTelefono = document.createElement('td');
+    tdTelefono.textContent = telefono;
+    tr.append(tdTelefono);
+
+    // apartado correo
+    const tdCorreo = document.createElement('td');
+    tdCorreo.textContent = correo;
+    tr.append(tdCorreo);
+
+    // apartado documento
+    const tdDocumento = document.createElement('td');
+    tdDocumento.textContent = documento;
+    tr.append(tdDocumento);
+
+    const clone = document.importNode(trTable, true)
+    campos.append(clone)
+  })
+  tbodyTable.append(campos);
 
  }
 
