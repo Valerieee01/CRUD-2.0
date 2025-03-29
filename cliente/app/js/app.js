@@ -8,7 +8,9 @@
 import { listarDocumentos } from "../casos_de_uso/documentos/index.js";
 import { listarGeneros } from "../casos_de_uso/generos/index.js";
 import { guardar_usuario, listarUsuarios } from "../casos_de_uso/usuarios/index.js";
-import { buscarId } from "../casos_de_uso/usuarios/busca_id.js";
+import { buscarId } from "../casos_de_uso/usuarios/index.js";
+import { eliminarId } from "../casos_de_uso/usuarios/index.js";
+
 import {
   tiene_valores,
   validar_campos,
@@ -155,14 +157,25 @@ document.addEventListener("DOMContentLoaded", () => {
   cargar_tabla();
 });
 
-// document.addEventListener("click", buscarId(".editar"));
-buscarId(".editar")
-buscarId(".eliminar")
+
+document.addEventListener("click", (e) => {
+  
+  if(e.target.matches(".editar")){
+    console.log(e.target.dataset.id);
+      const id = e.target.dataset.id
+      buscarId(id);
+  }
+
+  if(e.target.matches(".eliminar")){
+    const id = e.target.dataset.id
+    eliminarId(id);
+    
+}
+});
 
 nombre.addEventListener("keydown", son_letras);
 apellidos.addEventListener("keydown", son_letras);
 telefono.addEventListener("keydown", es_numero);
 documento.addEventListener("keydown", es_numero);
 email.addEventListener("blur", es_correo);
-
 formulario.addEventListener("submit", guardar);
