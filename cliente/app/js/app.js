@@ -8,7 +8,7 @@
 import { listarDocumentos } from "../casos_de_uso/documentos/index.js";
 import { listarGeneros } from "../casos_de_uso/generos/index.js";
 import { guardar_usuario, listarUsuarios } from "../casos_de_uso/usuarios/index.js";
-
+import { buscarId } from "../casos_de_uso/usuarios/busca_id.js";
 import {
   tiene_valores,
   validar_campos,
@@ -74,69 +74,21 @@ const cargar_pagina = async () => {
  const cargar_tabla = async () => {
    //cargar lista users
   const arrayUsers = await listarUsuarios();
-
-  const campos = document.createDocumentFragment();
-  arrayUsers.forEach(({nombre, apellidos, telefono, correo, documento}) => {
-
-    // creacion de los elementos
-    const trTable = document.createElement('tr')
-    const tdNombre = document.createElement('td');
-    const tdApellido = document.createElement('td');
-    const tdTelefono = document.createElement('td');
-    const tdCorreo = document.createElement('td');
-    const tdDocumento = document.createElement('td');
-    
-    //creacios los elementos boton
-    const tdBotonera = document.createElement("td");
-    const divBotonera = document.createElement('div');
-    const btnEliminar = document.createElement('button');
-    const btnEditar = document.createElement('button');
-
-    // contenido de los elementos
-    tdNombre.textContent = nombre;
-    tdApellido.textContent = apellidos;
-    tdTelefono.textContent = telefono;
-    tdCorreo.textContent = correo;
-    tdDocumento.textContent = documento;
-
-    // continido elementos tipo boton
-    btnEditar.textContent = "Editar";
-    btnEliminar.textContent = "Eliminar";
-
-
-    // asignacion de estilos
-    divBotonera.classList.add('botonera');
-    btnEditar.classList.add("btn", "btn--samall");
-    btnEliminar.classList.add("btn", "btn--samall","btn--danger");
-
-
-    // agregar elementos
-    trTable.append(tdNombre, tdApellido,tdTelefono, tdCorreo, tdDocumento);
-    divBotonera.append(btnEditar, btnEliminar);
-    tdBotonera.append(divBotonera);
-    trTable.append(tdBotonera)
-
-
-    const clone = document.importNode(trTable, true)
-    campos.append(clone)
+  arrayUsers.forEach(({id, nombre, apellidos, telefono, correo, documento}) => {
+    cargar_fila({id, nombre, apellidos, telefono, correo, documento});
   })
-  tbodyTable.append(campos);
  }
 
- const cargar_fila = async () => {
-    //cargar lista users
-  const arrayUsers = await listarUsuarios();
+ const cargar_fila =  ({id, nombre, apellidos, telefono, correo, documento}) => {
+      const fila = tbodyTable.insertRow(0);
+    fila.setAttribute("id" , `tr_${id}`);
 
-  const campos = document.createDocumentFragment();
-  arrayUsers.forEach(({nombre, apellidos, telefono, correo, documento}) => {
-
-    const fila = tbodyTable.insertRow(0);
     const celdaNombre = fila.insertCell(0);
     const celdaApelidos = fila.insertCell(1);
     const celdaTelefono = fila.insertCell(2);
     const celdaCorreo = fila.insertCell(3);
     const celdaDocumento = fila.insertCell(4);
-    
+  
     const celdaBotones = fila.insertCell(5);
     const divBotonera = document.createElement('div');
     const btnEditar = document.createElement('button');
@@ -150,14 +102,17 @@ const cargar_pagina = async () => {
     btnEditar.innerText = "Editar";
     btnEliminar.innerText = "Eliminar";
     
+    btnEditar.setAttribute("data-id", id);
+    btnEliminar.setAttribute("data-id", id);
+
     divBotonera.classList.add('botonera');
-    btnEditar.classList.add("btn", "btn--samall");
-    btnEliminar.classList.add("btn", "btn--samall","btn--danger");
+    btnEditar.classList.add("btn", "btn--samall", "editar");
+    btnEliminar.classList.add("btn", "btn--samall","btn--danger", "eliminar");
 
     divBotonera.append(btnEditar, btnEliminar);
     celdaBotones.appendChild(divBotonera);
 
-  });
+   
  }
 
 
@@ -174,7 +129,7 @@ const guardar = async (e) => {
     if (respuesta.status === 201) {
       alert("Usuario guardado correctamente");
       // refrescar automaticamente
-      cargar_fila();
+      cargar_tabla();
       // Limpiamos el formulario
       e.target.reset();
     }else{
@@ -191,12 +146,18 @@ const guardar = async (e) => {
  * ****************************************
  */
 
+
+
 // Evento que se ejecuta cuando el documento se ha cargado
 document.addEventListener("DOMContentLoaded", () => {
   cargar_pagina();
   // cargar_tabla();
-  cargar_fila();
+  cargar_tabla();
 });
+
+// document.addEventListener("click", buscarId(".editar"));
+buscarId(".editar")
+buscarId(".eliminar")
 
 nombre.addEventListener("keydown", son_letras);
 apellidos.addEventListener("keydown", son_letras);
