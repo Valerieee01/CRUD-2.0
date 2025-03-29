@@ -43,7 +43,7 @@ const cargar_pagina = async () => {
   // Cargamos los generos en el select
   const arrayGeneros = await listarGeneros();
   const arrayDocumentos = await listarDocumentos();
-  
+
   arrayGeneros.forEach((genero) => {
     const label = document.createElement("label");
     const input = document.createElement("input");
@@ -57,11 +57,11 @@ const cargar_pagina = async () => {
     input.setAttribute("value", genero.id);
     input.setAttribute("data-required", true);
     generos.append(label, input);
-  }); 
-  
+  });
+
   const option = document.createElement("option");
   option.textContent = "Seleccione...";
-  tipoDocumento.append(option);  
+  tipoDocumento.append(option);
   arrayDocumentos.forEach((documento) => {
     const option = document.createElement("option");
     option.textContent = documento.nombre;
@@ -77,7 +77,7 @@ const cargar_pagina = async () => {
 
   const campos = document.createDocumentFragment();
   arrayUsers.forEach(({nombre, apellidos, telefono, correo, documento}) => {
-    
+
     // creacion de los elementos
     const trTable = document.createElement('tr')
     const tdNombre = document.createElement('td');
@@ -85,11 +85,11 @@ const cargar_pagina = async () => {
     const tdTelefono = document.createElement('td');
     const tdCorreo = document.createElement('td');
     const tdDocumento = document.createElement('td');
-    const btnEliminar = document.createElement('button');
-
+    
     //creacios los elementos boton
     const tdBotonera = document.createElement("td");
     const divBotonera = document.createElement('div');
+    const btnEliminar = document.createElement('button');
     const btnEditar = document.createElement('button');
 
     // contenido de los elementos
@@ -99,12 +99,12 @@ const cargar_pagina = async () => {
     tdCorreo.textContent = correo;
     tdDocumento.textContent = documento;
 
-    // continido elementos tipo boton 
+    // continido elementos tipo boton
     btnEditar.textContent = "Editar";
     btnEliminar.textContent = "Eliminar";
 
 
-    // asignacion de estilos 
+    // asignacion de estilos
     divBotonera.classList.add('botonera');
     btnEditar.classList.add("btn", "btn--samall");
     btnEliminar.classList.add("btn", "btn--samall","btn--danger");
@@ -115,29 +115,66 @@ const cargar_pagina = async () => {
     divBotonera.append(btnEditar, btnEliminar);
     tdBotonera.append(divBotonera);
     trTable.append(tdBotonera)
-    
+
 
     const clone = document.importNode(trTable, true)
     campos.append(clone)
   })
   tbodyTable.append(campos);
  }
- 
- 
+
+ const cargar_fila = async () => {
+    //cargar lista users
+  const arrayUsers = await listarUsuarios();
+
+  const campos = document.createDocumentFragment();
+  arrayUsers.forEach(({nombre, apellidos, telefono, correo, documento}) => {
+
+    const fila = tbodyTable.insertRow(0);
+    const celdaNombre = fila.insertCell(0);
+    const celdaApelidos = fila.insertCell(1);
+    const celdaTelefono = fila.insertCell(2);
+    const celdaCorreo = fila.insertCell(3);
+    const celdaDocumento = fila.insertCell(4);
+    
+    const celdaBotones = fila.insertCell(5);
+    const divBotonera = document.createElement('div');
+    const btnEditar = document.createElement('button');
+    const btnEliminar = document.createElement('button');
+    
+    celdaNombre.innerText = nombre;
+    celdaApelidos.innerText = apellidos;
+    celdaTelefono.innerText = telefono;
+    celdaCorreo.innerText = correo;
+    celdaDocumento.innerText = documento;
+    btnEditar.innerText = "Editar";
+    btnEliminar.innerText = "Eliminar";
+    
+    divBotonera.classList.add('botonera');
+    btnEditar.classList.add("btn", "btn--samall");
+    btnEliminar.classList.add("btn", "btn--samall","btn--danger");
+
+    divBotonera.append(btnEditar, btnEliminar);
+    celdaBotones.appendChild(divBotonera);
+
+  });
+ }
+
+
 // Función asincrona para poder manipular las peticiones y guardar los datos del formulario
 const guardar = async (e) => {
   // Detenemos el comportamiento por defecto del formulario
-  // e.preventDefault();
+  e.preventDefault();
   // Validamos que el formulario tenga datos
   const data = validar_campos(e.target);
   // Validamos eu el objeto tenga los datos completos y no llegen vacios
   if (tiene_valores(data)) {
     // Enviamos los datos al metodo guardar_usuario
-    const respuesta = await guardar_usuario(data);    
+    const respuesta = await guardar_usuario(data);
     if (respuesta.status === 201) {
       alert("Usuario guardado correctamente");
       // refrescar automaticamente
-      cargar_tabla();
+      cargar_fila();
       // Limpiamos el formulario
       e.target.reset();
     }else{
@@ -157,7 +194,8 @@ const guardar = async (e) => {
 // Evento que se ejecuta cuando el documento se ha cargado
 document.addEventListener("DOMContentLoaded", () => {
   cargar_pagina();
-  cargar_tabla();
+  // cargar_tabla();
+  cargar_fila();
 });
 
 nombre.addEventListener("keydown", son_letras);
