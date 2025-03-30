@@ -29,14 +29,48 @@
   ],
   "usuarios": [
     {
-      "id": "51b0",
+      "id": "cb4f",
+      "genero": "2",
+      "nombre": "Ferney",
+      "apellidos": "Perez Montañez",
+      "telefono": "tui",
+      "correo": "zharmel.afa@gmail.com",
+      "tipo_documento": "1",
+      "documento": "1095304196",
+      "email": "zharmel.afa@gmail.com"
+    },
+    {
+      "id": "c3e9",
+      "genero": "2",
+      "nombre": "Ferney",
+      "apellidos": "Perez Montañez",
+      "telefono": "tui",
+      "correo": "zharmel.afa@gmail.com",
+      "tipo_documento": "1",
+      "documento": "1095304196",
+      "email": "zharmel.afa@gmail.com"
+    },
+    {
+      "id": "2dc3",
+      "genero": "1",
+      "nombre": "",
+      "apellidos": "",
+      "telefono": "",
+      "correo": "zharmel.afa@gmail.com",
+      "tipo_documento": "1",
+      "documento": "",
+      "email": ""
+    },
+    {
+      "id": "7c13",
       "genero": "1",
       "nombre": "Valerie Zharmel",
-      "apellidos": "Afanador Perez",
+      "apellidos": "Perez Montañez",
       "telefono": "3172963180",
       "correo": "zharmel.afa@gmail.com",
       "tipo_documento": "1",
-      "documento": "1095304196"
+      "documento": "1098621007",
+      "email": "zharmel.afa@gmail.com"
     }
   ]
 }
