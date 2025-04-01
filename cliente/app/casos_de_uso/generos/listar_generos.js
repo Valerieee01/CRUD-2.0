@@ -5,7 +5,7 @@
  */
 export const listarGeneros = async () => {
   try {
-    const response = await fetch("http://127.0.0.1:3000/generos");
+    const response = await fetch("http://localhost:3000/generos");
     const generos = await response.json();
     return generos;
   } catch (error) {

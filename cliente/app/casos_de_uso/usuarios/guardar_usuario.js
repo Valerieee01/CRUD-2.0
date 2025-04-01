@@ -5,7 +5,7 @@
  */
 export const guardar_usuario = async (data) => {
   // Enviamos los datos al servidor por medio de una petición fetch y el método POST
-  const envio = await fetch("http://127.0.0.1:3000/usuarios", {
+  const envio = await fetch("http://localhost:3000/usuarios", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -15,5 +15,5 @@ export const guardar_usuario = async (data) => {
   // Capturamos la respuesta del servidor
   const respuesta = await envio.json();
   // Retornamos la respuesta del servidor
-  return { "status": envio.status, "data": respuesta };  
+  return { "status": envio.status, "data": respuesta };
 };

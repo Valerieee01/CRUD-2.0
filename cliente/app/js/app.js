@@ -7,10 +7,13 @@
 // Importaciones para las ayudas
 import { listarDocumentos } from "../casos_de_uso/documentos/index.js";
 import { listarGeneros } from "../casos_de_uso/generos/index.js";
-import { guardar_usuario, listarUsuarios } from "../casos_de_uso/usuarios/index.js";
-import { buscarId } from "../casos_de_uso/usuarios/index.js";
-import { eliminarId } from "../casos_de_uso/usuarios/index.js";
-
+import {
+  actualizar_usuario,
+  buscar_usuario_por_id,
+  eliminar_usuario_por_id,
+  guardar_usuario,
+  listar_usuarios
+} from "../casos_de_uso/usuarios/index.js";
 import {
   tiene_valores,
   validar_campos,
@@ -21,7 +24,7 @@ import {
 
 /**
  * ****************************************
- * Definimos las variebales
+ * Definimos las variables
  * ****************************************
  */
 
@@ -33,18 +36,21 @@ const email = document.querySelector("#correo");
 const tipoDocumento = document.querySelector("#tipo_documento");
 const documento = document.querySelector('#documento');
 const generos = document.querySelector('#generos');
-const tbodyTable = document.querySelector('tbody');
+const tabla = document.querySelector("#tabla");
+const identificador = document.querySelector("#identificador");
+
+// console.log(tabla);
 
 /**
  * ****************************************
  * Programos los Metodos
  * ****************************************
  */
-const cargar_pagina = async () => {
+const cargar_formulario = async () => {
 
   // Cargamos los generos en el select
   const arrayGeneros = await listarGeneros();
-  const arrayDocumentos = await listarDocumentos();
+  const arrayDocumentos = await listarDocumentos()
 
   arrayGeneros.forEach((genero) => {
     const label = document.createElement("label");
@@ -70,53 +76,72 @@ const cargar_pagina = async () => {
     option.value = documento.id;
     tipoDocumento.append(option);
   });
+}
 
- }
+const llenado = async (e) => {
+  const id = e.target.dataset.id;
+  const data = await buscar_usuario_por_id(id);
+  identificador.value = id;
 
- const cargar_tabla = async () => {
-   //cargar lista users
-  const arrayUsers = await listarUsuarios();
-  arrayUsers.forEach(({id, nombre, apellidos, telefono, correo, documento}) => {
-    cargar_fila({id, nombre, apellidos, telefono, correo, documento});
+  nombre.value = data.nombre;
+  apellidos.value = data.apellidos;
+  telefono.value = data.telefono;
+  correo.value = data.correo;
+  tipoDocumento.selectedIndex = data.tipo_documento;
+  documento.value = data.documento;
+
+  const radios = generos.querySelectorAll('input[type=radio]')
+
+  radios.forEach((elemento) => {
+    elemento.checked = elemento.value == data.genero;
   })
- }
 
- const cargar_fila =  ({id, nombre, apellidos, telefono, correo, documento}) => {
-      const fila = tbodyTable.insertRow(0);
-    fila.setAttribute("id" , `tr_${id}`);
+}
 
-    const celdaNombre = fila.insertCell(0);
-    const celdaApelidos = fila.insertCell(1);
-    const celdaTelefono = fila.insertCell(2);
-    const celdaCorreo = fila.insertCell(3);
-    const celdaDocumento = fila.insertCell(4);
-  
-    const celdaBotones = fila.insertCell(5);
-    const divBotonera = document.createElement('div');
-    const btnEditar = document.createElement('button');
-    const btnEliminar = document.createElement('button');
-    
-    celdaNombre.innerText = nombre;
-    celdaApelidos.innerText = apellidos;
-    celdaTelefono.innerText = telefono;
-    celdaCorreo.innerText = correo;
-    celdaDocumento.innerText = documento;
-    btnEditar.innerText = "Editar";
-    btnEliminar.innerText = "Eliminar";
-    
-    btnEditar.setAttribute("data-id", id);
-    btnEliminar.setAttribute("data-id", id);
+const cargar_tabla = async () => {
+  const usuarios = await listar_usuarios();
+  usuarios.forEach(usuario => {
+    crearFila(usuario);
+  });
+}
 
-    divBotonera.classList.add('botonera');
-    btnEditar.classList.add("btn", "btn--samall", "editar");
-    btnEliminar.classList.add("btn", "btn--samall","btn--danger", "eliminar");
 
-    divBotonera.append(btnEditar, btnEliminar);
-    celdaBotones.appendChild(divBotonera);
+const crearFila = ({ id, nombre, apellidos, telefono, correo, tipo_documento, documento }) => {
 
-   
- }
+  const tBody = tabla.querySelector("tbody");
+  const tr = tBody.insertRow(0);
+  const tdNombre = tr.insertCell(0);
+  const tdApellidos = tr.insertCell(1);
+  const tdTelefono = tr.insertCell(2);
+  const tdCorreo = tr.insertCell(3);
+  const tdDocumento = tr.insertCell(4);
+  const tdBotonera = tr.insertCell(5);
+  // Agregar el contenido a las celdas
+  tdNombre.textContent = nombre;
+  tdApellidos.textContent = apellidos;
+  tdTelefono.textContent = telefono;
+  tdCorreo.textContent = correo;
+  tdDocumento.textContent = documento;
 
+  const div = document.createElement("div");
+  const btnEliminar = document.createElement("button");
+  const btnEditar = document.createElement("button");
+
+  btnEditar.setAttribute("data-id", id)
+  btnEliminar.setAttribute("data-id", id)
+
+  btnEditar.textContent = "Editar";
+  btnEliminar.textContent = "Eliminar";
+
+  div.classList.add("botonera");
+  btnEditar.classList.add("btn", "btn--samall", "editar");
+  btnEliminar.classList.add("btn", "btn--samall", "btn--danger", "eliminar");
+  div.append(btnEditar, btnEliminar);
+  tdBotonera.append(div);
+
+  tr.setAttribute("id", `user_${id}`);
+
+}
 
 // Función asincrona para poder manipular las peticiones y guardar los datos del formulario
 const guardar = async (e) => {
@@ -126,18 +151,25 @@ const guardar = async (e) => {
   const data = validar_campos(e.target);
   // Validamos eu el objeto tenga los datos completos y no llegen vacios
   if (tiene_valores(data)) {
-    // Enviamos los datos al metodo guardar_usuario
-    const respuesta = await guardar_usuario(data);
-    if (respuesta.status === 201) {
-      alert("Usuario guardado correctamente");
-      // refrescar automaticamente
-      cargar_tabla();
-      // Limpiamos el formulario
-      e.target.reset();
-    }else{
-      alert("Error al guardar el usuario");
+    // Validar que el formulario tenga un identificador
+    if (identificador.value) {
+      actualizar_usuario(identificador.value, data);
+    } else {
+      // Enviamos los datos al metodo guardar_usuario
+      const respuesta = await guardar_usuario(data);
+      // console.log(respuesta);
+      if (respuesta.status === 201) {
+        alert("Usuario guardado correctamente");
+        // Limpiamos el formulario
+        e.target.reset();
+        // Llamamos el metodo crearFila
+        crearFila(respuesta.data);
+
+      } else {
+        alert("Error al guardar el usuario");
+      }
     }
-  }else{
+  } else {
     alert("Formulario incompleto");
   }
 }
@@ -148,34 +180,27 @@ const guardar = async (e) => {
  * ****************************************
  */
 
-
-
 // Evento que se ejecuta cuando el documento se ha cargado
 document.addEventListener("DOMContentLoaded", () => {
-  cargar_pagina();
-  // cargar_tabla();
+  cargar_formulario();
+
   cargar_tabla();
 });
 
-
-document.addEventListener("click", (e) => {
-  
-  if(e.target.matches(".editar")){
-    console.log(e.target.dataset.id);
-      const id = e.target.dataset.id
-      buscarId(id);
+document.addEventListener("click", async (e) => {
+  // Evento para el botón editar en latabla que creamos en el SENA
+  // Llamar la función para llenar el formulario
+  if (e.target.matches(".editar")) llenado(e);
+  if (e.target.matches(".eliminar")) {
+    eliminar_usuario_por_id(e.target.dataset.id);
   }
 
-  if(e.target.matches(".eliminar")){
-    const id = e.target.dataset.id
-    eliminarId(id);
-    
-}
-});
+})
 
 nombre.addEventListener("keydown", son_letras);
 apellidos.addEventListener("keydown", son_letras);
 telefono.addEventListener("keydown", es_numero);
 documento.addEventListener("keydown", es_numero);
 email.addEventListener("blur", es_correo);
+
 formulario.addEventListener("submit", guardar);

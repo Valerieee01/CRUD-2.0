@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crud</title>
   <link rel="stylesheet" href="app/css/style.css">
 </head>
+
 <body>
   <main>
     <section class="container grid">
@@ -17,6 +19,7 @@
       <div class="formulario">
         <h2 class="title">Datos basicos</h2>
         <form id="form" class="form__container" novalidate>
+          <input type="hidden" id="identificador">
           <div class="form-group">
             <label for="nombre" class="form__label">Nombre</label>
             <input type="text" name="nombre" id="nombre" class="form__input" data-required="true">
@@ -53,7 +56,7 @@
       </div>
       <div class="tabla">
         <h2 class="title">Listado de usuarios</h2>
-        <table>
+        <table id="tabla">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -65,7 +68,6 @@
             </tr>
           </thead>
           <tbody>
-            
           </tbody>
         </table>
       </div>
@@ -73,4 +75,5 @@
   </main>
   <script src="app/js/app.js" type="module"></script>
 </body>
+
 </html>
